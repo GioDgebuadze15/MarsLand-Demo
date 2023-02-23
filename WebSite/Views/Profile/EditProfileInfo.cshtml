@@ -1,0 +1,51 @@
+﻿@model UserInfoCollectionViewModel
+@{
+    Layout = "_ProfileLayout";
+}
+
+<main>
+    <div class="row py-3 px-4">
+        <div class="col-lg-7 mx-auto">
+            <div class="px-4 py-3">
+                <div class="p-4 rounded shadow-sm bg-light">
+                    <h3 style=" text-align: center">Edit Profile Information</h3>
+                    <form asp-controller="Profile" asp-action="EditInfo" method="post" class="edit-info-form">
+                        <input style="display:none" value="@User.Identity.Name" name="identityUsername" />
+
+                        <div class="input-group">
+                            <span class="input-group-text"> <i class="fa fa-birthday-cake" aria-hidden="true"></i> </span>
+                            <input class="form-control" type="date" name="dateOfBirth" Value="@Model.EditProfileInfo.GetShortDate()">
+                            <span class="input-group-text"> <i class="fa fa-venus-mars" aria-hidden="true"></i> </span>
+                            <select name="Gender">
+                                <option value="@Model.EditProfileInfo.Gender" hidden selected>@Model.EditProfileInfo.Gender</option>
+                                @foreach (var item in Enum.GetValues(typeof(GenderEnum)))
+                                {
+                                    <option value="@item">@item</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-text"> <i class="fa fa-flag" aria-hidden="true"></i> </span>
+                            <select name="Country" class=" form-select">
+                                <option value="@Model.EditProfileInfo.Country" hidden selected>@Model.EditProfileInfo.Country</option>
+                                @foreach (var item in Enum.GetValues(typeof(CountryEnum)))
+                                {
+                                    <option value="@item">@item</option>
+                                }
+                            </select>
+                        </div> <!-- form-group// -->
+
+                        <div class="input-group create-account-btn-div" style="width:50%;">
+                            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                        </div> <!-- form-group// -->
+
+                    </form>
+
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</main>

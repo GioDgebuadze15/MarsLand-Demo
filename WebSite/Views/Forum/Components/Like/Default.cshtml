@@ -1,0 +1,19 @@
+﻿@model UserInfoCollectionViewModel
+
+@if (Model.CommentViewModel.HasAlreadyLiked != null)
+{
+    @if (Model.CommentViewModel.HasAlreadyLiked == true)
+    {
+        <form onsubmit="UnlikePost(event)" style="display: inline-block;" asp-controller="Profile" asp-action="UnlikePost">
+            <input type="hidden" name="PostId" value="@Model.CommentViewModel.PostId" />
+            <button type="submit" class="btn btn-light post-comment-btn"><i class="fa fa-thumbs-down" aria-hidden="true"></i><span>Unlike</span></button>
+        </form>
+    }
+    else
+    {
+        <form onsubmit="LikePost(event)" style="display: inline-block;" asp-controller="Profile" asp-action="LikePost">
+            <input type="hidden" name="PostId" value="@Model.CommentViewModel.PostId" />
+            <button type="submit" class="btn btn-light post-comment-btn"><i class="fa fa-heart" aria-hidden="true"></i><span>Like</span></button>
+        </form>
+    }
+}

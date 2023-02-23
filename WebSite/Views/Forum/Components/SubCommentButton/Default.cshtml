@@ -1,0 +1,52 @@
+﻿@model UserInfoCollectionViewModel
+
+@if (Model.CommentViewModel.SubComment != null)
+{
+    if (Model.CommentViewModel.SubComment.UserId == Model.AppUser.Id || Model.CommentViewModel.SubComment.UserId == Model.CommentViewModel.Post.UserId)
+    {
+        <form onsubmit="DeleteComment(event)" style="display: inline-block;" asp-controller="Profile" asp-action="DeletePostComment">
+            <input type="hidden" name="PostId" value="@Model.CommentViewModel.PostId" />
+            <input type="hidden" name="MainCommentId" value="@Model.CommentViewModel.SubComment.MainCommentId" />
+            <input type="hidden" name="SubCommentId" value="@Model.CommentViewModel.SubComment.Id" />
+            <button type="submit" class="leave-comment-btn">Delete</button>
+        </form>
+        if (Model.CommentViewModel.SubComment.UserId == Model.AppUser.Id)
+        {
+            <button onclick="ShowEditSubCommentDiv(@Model.CommentViewModel.SubComment.Id)" class="leave-comment-btn">Edit</button>
+
+            <div id="@Model.CommentViewModel.SubComment.Id" class="editSubCommentDiv" style="display:none;">
+                <div class="write-comment-div">
+                    <form onsubmit="EditComment(event)" class="createMainCommentForm" asp-controller="Profile" asp-action="EditPostComment">
+                        <span>
+                            @if (Model.AppUser.UserInfo.ProfileImage != null)
+                            {
+                                <img src="~/Tools/ProfileImages/@Model.AppUser.UserInfo.ProfileImage.ImageName" asp-append-version="true" alt="Profile Image" class="rounded-circle sm-prof-img" />
+                            }
+                            else
+                            {
+                                if (Model.AppUser.UserInfo.Gender == GenderEnum.Female)
+                                {
+                                    <img src="~/Tools/Images/ProfileImageFemaleTemplate.png" alt="Profile Image" class="rounded-circle sm-prof-img" />
+                                }
+                                else
+                                {
+                                    <img src="~/Tools/Images/ProfileImageMaleTemplate.png" alt="Profile Image" class="rounded-circle sm-prof-img" />
+                                }
+                            }
+                        </span>
+                        <div class="group-focus-div">
+                            <input type="hidden" name="PostId" value="@Model.CommentViewModel.PostId" />
+                            <input type="hidden" name="SubCommentId" value="@Model.CommentViewModel.SubComment.Id" />
+                            <input type="hidden" name="MainCommentId" value="@Model.CommentViewModel.SubComment.MainCommentId" />
+                            <input type="text" class="input100 input99 editSubComInput" value="@Model.CommentViewModel.SubComment.Text" name="CommentText" required />
+                            <span class="focus-input100"></span>
+                        </div>
+                        <button type="submit" class="leave-comment-btn"><i class="fa fa-comment-dots fa-2x" aria-hidden="true"></i></button>
+                    </form>
+                </div>
+            </div>
+        }
+
+
+    }
+}

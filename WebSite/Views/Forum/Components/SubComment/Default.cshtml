@@ -1,0 +1,92 @@
+﻿@model UserInfoCollectionViewModel
+@{
+
+}
+
+@if (Model.CommentViewModel.SubComments.Count != 0)
+{
+    <div id="@Model.CommentViewModel.MainCommentId" class="sub-comment-body">
+        @foreach (var subComment in Model.CommentViewModel.SubComments)
+        {
+            <div class="sub-comment-body-div comment-body-div" id="@subComment.Id">
+                <span>
+                    @if (subComment.User.UserInfo.ProfileImage != null)
+                    {
+                        <img src="~/Tools/ProfileImages/@subComment.User.UserInfo.ProfileImage.ImageName" asp-append-version="true" alt="Profile Image" class="rounded-circle sm-prof-img" />
+                    }
+                    else
+                    {
+                        if (subComment.User.UserInfo.Gender == GenderEnum.Female)
+                        {
+                            <img src="~/Tools/Images/ProfileImageFemaleTemplate.png" alt="Profile Image" class="rounded-circle sm-prof-img" />
+                        }
+                        else
+                        {
+                            <img src="~/Tools/Images/ProfileImageMaleTemplate.png" alt="Profile Image" class="rounded-circle sm-prof-img" />
+                        }
+                    }
+                </span>
+                <div class="group-comment-div">
+                    <div class="comment-author">
+                        <a asp-controller="User" asp-action="UserProfileView" asp-route-Id="@subComment.User.Id" class="fullname">@subComment.User.UserInfo.FirstName @subComment.User.UserInfo.LastName</a>
+                    </div>
+                    <div class="comment-text-div">
+                        <div id="@subComment.Id" class="sub-comment-after-edit">
+                            @subComment.Text
+                        </div>
+                        <div class="comment-time-div">
+                            @subComment.GetTimeDuration()
+
+                            <div id="@subComment.Id" class="subCommBtnDiv">
+                                <vc:sub-comment-button 
+                                                       vm="@Model"
+                                                       sub-comment-id="@subComment.Id">
+                                </vc:sub-comment-button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+
+        }
+    </div>
+}
+
+
+
+
+
+<div class="leaveSubCommentDiv">
+    <div class="write-sub-comment-div">
+        <form onsubmit="sendSubComment(event)" class="createMainCommentForm" asp-controller="Profile" asp-action="ComentOnPost">
+            <span>
+                @if (Model.AppUser.UserInfo.ProfileImage != null)
+                {
+                    <img src="~/Tools/ProfileImages/@Model.AppUser.UserInfo.ProfileImage.ImageName" asp-append-version="true" alt="Profile Image" class="rounded-circle sm-prof-img" />
+                }
+                else
+                {
+                    if (Model.AppUser.UserInfo.Gender == GenderEnum.Female)
+                    {
+                        <img src="~/Tools/Images/ProfileImageFemaleTemplate.png" alt="Profile Image" class="rounded-circle sm-prof-img" />
+                    }
+                    else
+                    {
+                        <img src="~/Tools/Images/ProfileImageMaleTemplate.png" alt="Profile Image" class="rounded-circle sm-prof-img" />
+                    }
+                }
+            </span>
+            <div class="group-focus-div">
+                <input id="@Model.CommentViewModel.MainCommentId" type="text" class="input100 input99 sub-comment-input" placeholder="Write a comment..." name="CommentText" required />
+                <span class="focus-input100"></span>
+            </div>
+            <input type="hidden" name="PostId" value="@Model.CommentViewModel.PostId" />
+            <input type="hidden" name="MainCommentId" value="@Model.CommentViewModel.MainCommentId" />
+            <input type="hidden" name="SubCommentId" value="" />
+            <button type="submit" class="leave-comment-btn"><i class="fa fa-comment-dots fa-2x" aria-hidden="true"></i></button>
+        </form>
+    </div>
+</div>

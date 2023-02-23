@@ -1,0 +1,69 @@
+﻿@{
+    Layout = "_Layout";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Feedback Form</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="~/Css/leaveFeedbackStyleSheet.css" rel="stylesheet" />
+
+</head>
+<body>
+        
+        <div class="container-contact100 ">
+            <main>
+                <div class="wrap-contact100">
+                    <div class="contact100-pic js-tilt" data-tilt data-tilt-glare data-tilt-max-glare="0.8">
+                        <img src="/Tools/Images/FeedbackIcon.png" alt="IMG">
+                    </div>
+
+                    <form class="contact100-form validate-form">
+                        <span class="contact100-form-title">
+                            Leave Feedback
+                        </span>
+
+                        <div class="wrap-input100 validate-input" data-validate="Name is required">
+                            <input class="input100" type="text" name="feedbackName" placeholder="Name">
+                            <span class="focus-input100"></span>
+                            <span class="symbol-input100">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                            </span>
+                        </div>
+
+
+                        <div class="wrap-input100 validate-input" data-validate="Message is required">
+                            <textarea class="input100" name="feedbackText" placeholder="Describe Your Experience Here..."></textarea>
+                            <span class="focus-input100"></span>
+                        </div>
+
+                        <div class="rating">
+                            <input type="radio" name="rating" value="5" id="5"><label for="5">☆</label>
+                            <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label>
+                            <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label>
+                            <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label>
+                            <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
+                            
+                        </div>
+
+                        <div class="container-contact100-form-btn">
+                            <button id="SendFeedback" class="contact100-form-btn" type="button">
+                                Send
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </main>
+        </div>
+        
+
+        <script>
+            $('.js-tilt').tilt({
+                scale: 1.1
+            })
+        </script>
+        
+
+</body>
+</html>

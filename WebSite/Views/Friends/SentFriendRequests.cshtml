@@ -1,0 +1,63 @@
+﻿@{
+    Layout = "_ProfileLayout";
+}
+@model UserInfoCollectionViewModel
+
+
+
+
+<main>
+    <div class="container-fluid">
+
+        @foreach (var Request in Model.FriendRequests)
+        {
+            <div class="row py-3 px-4">
+                <div class="col-lg-7 mx-auto">
+                    <div class="row">
+                        <div class="people-nearby">
+
+                            <div class="people-nearby-div">
+                                @if (Request.FriendUsers.FirstOrDefault().User.UserInfo.ProfileImage != null)
+                                {
+
+                                    <img src="~/Tools/ProfileImages/@Request.FriendUsers.FirstOrDefault().User.UserInfo.ProfileImage.ImageName" asp-append-version="true" alt="Profile Image" class="rounded-circle" id="peopleProfileImages" />
+
+                                }
+                                else
+                                {
+                                    if (Request.FriendUsers.FirstOrDefault().User.UserInfo.Gender == GenderEnum.Female)
+                                    {
+                                        <img src="~/Tools/Images/ProfileImageFemaleTemplate.png" alt="Profile Image" class="rounded-circle" id="peopleProfileImages" />
+
+                                    }
+                                    else
+                                    {
+                                        <img src="~/Tools/Images/ProfileImageMaleTemplate.png" alt="Profile Image" class="rounded-circle" id="peopleProfileImages" />
+                                    }
+                                }
+
+                                <div>
+                                    <span>
+                                        <a asp-controller="User" asp-action="UserProfileView" asp-route-Id="@Request.FriendUsers.FirstOrDefault().User.Id" data-hover="@Request.FriendUsers.FirstOrDefault().User.UserName" class="fullname">@Request.FriendUsers.FirstOrDefault().User.UserInfo.FirstName @Request.FriendUsers.FirstOrDefault().User.UserInfo.LastName</a>
+                                    </span>
+                                </div>
+
+                                <div class="showPeopleDiv">
+                                    <form asp-controller="Friends" asp-action="CancelFriendRequest" method="post" >
+                                        <input style="display:none" value="@Request.Id" name="id" />
+                                        <button type="submit" class="btn btn-secondary float-right align-middle" id="sendFriendRequest"><i class="fa fa-user-times" aria-hidden="true"></i>Cancel Request</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        }
+    </div>
+
+
+
+</main>

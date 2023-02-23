@@ -1,0 +1,57 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\js\ContactUsJavaScript.js" />
+    <Content Remove="wwwroot\js\map-custom.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Models\Message.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\Tools\CoverImages\" />
+    <Folder Include="wwwroot\Tools\PostImages\" />
+    <Folder Include="wwwroot\Tools\ProfileImages\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\ForContactUsPage\Animsition\css\animsition.css" />
+    <None Include="wwwroot\ForContactUsPage\Animsition\css\animsition.min.css" />
+    <None Include="wwwroot\ForContactUsPage\Animsition\js\animsition.js" />
+    <None Include="wwwroot\ForContactUsPage\Animsition\js\animsition.min.js" />
+    <None Include="wwwroot\ForContactUsPage\CountdownTime\countdowntime.js" />
+    <None Include="wwwroot\ForContactUsPage\DateRangePicker\daterangepicker.css" />
+    <None Include="wwwroot\ForContactUsPage\DateRangePicker\daterangepicker.js" />
+    <None Include="wwwroot\ForContactUsPage\DateRangePicker\moment.js" />
+    <None Include="wwwroot\ForContactUsPage\DateRangePicker\moment.min.js" />
+    <None Include="wwwroot\ForContactUsPage\PerfectScrollbar\perfect-scrollbar.css" />
+    <None Include="wwwroot\ForContactUsPage\PerfectScrollbar\perfect-scrollbar.min.js" />
+    <None Include="wwwroot\ForContactUsPage\SelectTwo\selectTwo.css" />
+    <None Include="wwwroot\ForContactUsPage\SelectTwo\selectTwo.js" />
+    <None Include="wwwroot\ForContactUsPage\SelectTwo\selectTwo.min.css" />
+    <None Include="wwwroot\ForContactUsPage\SelectTwo\selectTwo.min.js" />
+    <None Include="wwwroot\js\ContactUsJavaScript.js" />
+    <None Include="wwwroot\ForContactUsPage\map-custom.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Abp" Version="6.5.0" />
+    <PackageReference Include="MailKit" Version="2.15.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="5.0.11" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="5.0.11" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.11">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.OData.Edm" Version="7.9.3" />
+    <PackageReference Include="PhotoSauce.MagicScaler" Version="0.12.2" />
+  </ItemGroup>
+
+</Project>

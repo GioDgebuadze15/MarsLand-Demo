@@ -1,0 +1,155 @@
+﻿@model Chat
+@{
+    Layout = "_MessangerLayout";
+    bool isAdmin = false;
+    var userId = User.GetUserId();
+}
+@if (Model != null)
+{
+    {
+
+        foreach (var user in Model.Users)
+        {
+            if (user.UserId == User.GetUserId())
+            {
+                if (user.Role == UserRole.Admin)
+                {
+                    isAdmin = true;
+                    break;
+                }
+            }
+        }
+    }
+<div class="chat-info">
+    @if (Model.Type == ChatType.Private)
+    {
+
+        <div class="chat-info-name">
+            <p>@Model.Users.FirstOrDefault(x => x.UserId != userId).User.UserName</p>
+        </div>
+
+
+    }
+    else
+    {
+        <div class="chat-info-name">
+            <p>@Model.Name</p>
+        </div>
+        if (!isAdmin)
+        {
+            <div class="chat-info-div">
+                <form asp-controller="Messanger" asp-action="LeaveChat">
+                    <input asp-for="Id" type="hidden">
+                    <button type="submit" class="chat-info-btn">Leave Chat</button>
+                </form>
+            </div>
+        }
+        else
+        {
+            <a id="edit-room-name-btn" class="chat-info-btn" href="#">Edit Name</a>
+            <div class="chat-info-div">
+                <form asp-controller="Messanger" asp-action="DeleteRoom">
+                    <input asp-for="Id" type="hidden">
+                    <button type="submit" class="chat-info-btn">Delete Room</button>
+                </form>
+
+            </div>
+        }
+    }
+</div>
+    <div class="chat-body" id="chat-body">
+
+        @foreach (var message in Model.Messages)
+        {
+            <div class="message">
+                <header>@message.Name:</header>
+                <p>@message.Text</p>
+                <footer>@message.Timestamp.ToString("hh:mm MM/dd")</footer>
+            </div>
+        }
+
+
+    </div>
+    <form class="chat-input" onsubmit="sendMessage(event)" asp-controller="Messanger" asp-action="CreateMessage">
+        <input type="hidden" name="roomId" value="@Model.Id">
+        <input type="text" name="message" id="message-input" required>
+        <button type="submit">Send</button>
+    </form>
+
+    <div class="modal" id="edit-room-name-modal">
+        <form asp-controller="Messanger" asp-action="EditRoomName" class="modal-body">
+            <button type="button" class="close" onclick="closeModal()">X</button>
+            <header>Edit Room Name</header>
+            <div>
+                <input asp-for="Id" type="hidden">
+                <input name="newName" placeholder="New Name">
+            </div>
+            <footer>
+                <button>Change</button>
+            </footer>
+        </form>
+    </div>
+
+    @section scripts {
+        <script src="~/signalr/signalr.js"></script>
+        <script src="~/Js/MessageBuilder.js"></script>
+
+        <script src="~/axios/axios.min.js"></script>
+        <script>
+            window.addEventListener('load', (event) => {
+                var scrollBottom = document.querySelector('#chat-body');
+                scrollBottom.scrollTop = scrollBottom.scrollHeight;
+            });
+    var connection = new signalR.HubConnectionBuilder()
+        .withUrl("/chatHub")
+        .build();
+    var _connectionId = '';
+        connection.on("ReceiveMessage", function (data) {
+        var message = MessageBuilder()
+            .createMessage()
+            .withHeader(data.name)
+            .withParagraph(data.text)
+            .withFooter(data.timestamp)
+            .build();
+            document.querySelector('.chat-body').append(message);
+            //scroll down when message is sent
+            var scrollBottom = document.querySelector('#chat-body');
+            scrollBottom.scrollTop = scrollBottom.scrollHeight;
+    })
+    connection.start()
+        .then(function () {
+
+            connection.invoke('joinRoom', '@Model.Id');
+        })
+        .catch(function (err) {
+            console.log(err)
+        })
+    window.addEventListener('onunload', function () {
+        connection.invoke('leaveRoom', '@Model.Id');
+    })
+            var sendMessage = function (event) {
+            if (document.getElementById('message-input').value != '') {
+                event.preventDefault();
+                var data = new FormData(event.target);
+                document.getElementById('message-input').value = '';
+
+                axios.post('/Messanger/SendMessage', data)
+                    .then(res => {
+                        console.log("Message Sent!")
+
+                    })
+                    .catch(err => {
+                        console.log("Failed to send message!")
+                    })
+
+                }
+
+
+            }
+            function scrollDown() {
+                var scrollBottom = document.querySelector('#chat-body');
+                scrollBottom.scrollTop = scrollBottom.scrollHeight;
+            }
+        </script>
+    }
+}

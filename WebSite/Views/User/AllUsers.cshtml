@@ -1,0 +1,51 @@
+﻿@{
+    Layout = "_ProfileLayout";
+}
+@model UserInfoCollectionViewModel
+
+<main>
+    <div class="numberOfUsers">@Model.AllUserInfoView.Count() Users In Total</div>
+
+    <div class="allUsersContainer">
+
+
+        @foreach (var activeUser in Model.AllUserInfoView)
+        {
+            if(activeUser.User.UserName != User.Identity.Name)
+            {
+            <div class="people-nearby">
+
+                @if (activeUser.User.UserInfo.ProfileImage != null)
+                {
+
+                    <img src="~/Tools/ProfileImages/@activeUser.User.UserInfo.ProfileImage.ImageName" asp-append-version="true" alt="Profile Image" class="rounded-circle" id="peopleProfileImages" />
+
+                }
+                else
+                {
+                    if (activeUser.User.UserInfo.Gender == GenderEnum.Female)
+                    {
+                        <img src="~/Tools/Images/ProfileImageFemaleTemplate.png" alt="Profile Image" class="rounded-circle" id="peopleProfileImages" />
+
+                    }
+                    else
+                    {
+                        <img src="~/Tools/Images/ProfileImageMaleTemplate.png" alt="Profile Image" class="rounded-circle" id="peopleProfileImages" />
+                    }
+                }
+                <div class="allUsersInfo">
+                    <span>
+                        <a asp-controller="User" asp-action="UserProfileView" asp-route-Id="@activeUser.UserId" data-hover="@activeUser.User.UserName" class="fullname">@activeUser.User.UserInfo.FirstName @activeUser.User.UserInfo.LastName</a>
+                    </span>
+
+                </div>
+
+            </div>
+            }
+
+        }
+
+    </div>
+
+
+</main>

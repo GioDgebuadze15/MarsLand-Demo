@@ -1,0 +1,464 @@
+﻿@{
+    Layout = "_ProfileLayout";
+}
+
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AppUser> signInManager
+@inject UserManager<AppUser> userManager
+@model UserInfoCollectionViewModel
+
+
+
+<main>
+
+    @if (signInManager.IsSignedIn(User))
+    {
+        if (Model != null)
+        {
+
+            <div class="row py-3 px-4">
+                <div class="col-lg-7 mx-auto">
+                    <!-- Profile widget -->
+                    <div class="bg-white shadow rounded overflow-hidden">
+                        <div class="cover">
+                            <div class="d-flex align-items-end justify-content-start profile-head">
+                                @if (Model.AppUser.UserInfo.CoverImage != null)
+                                {
+                                    <img src="~/Tools/CoverImages/@Model.AppUser.UserInfo.CoverImage.ImageName" />
+                                }
+                                else
+                                {
+                                    <img width="960" height="360" src="~/Tools/Images/DefaultCoverImage.jfif" />
+                                }
+                                <div class="profile mr-3 profileImageContainer">
+
+                                    @if (Model.AppUser.UserInfo.ProfileImage != null)
+                                    {
+
+                                        <img src="~/Tools/ProfileImages/@Model.AppUser.UserInfo.ProfileImage.ImageName" asp-append-version="true" alt="Profile Image" class="rounded " id="ProfileImage" />
+
+                                        <form asp-controller="Profile" asp-action="DeleteProfileImage" method="post">
+                                            <button type="submit" class="btn btn-outline-dark" id="ProfileImageDeleteButton">Delete</button>
+                                        </form>
+
+
+                                    }
+                                    else
+                                    {
+                                        @if (Model.AppUser.UserInfo.Gender == GenderEnum.Female)
+                                        {
+                                            <div>
+                                                <img src="~/Tools/Images/ProfileImageFemaleTemplate.png" style="width:200px; height:200px; padding:0" alt="Profile Image" class="rounded  img-thumbnail profileImage" />
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div>
+                                                <img src="~/Tools/Images/ProfileImageMaleTemplate.png" style="width:200px; height:200px; padding:0" alt="Profile Image" class="rounded  img-thumbnail profileImage" />
+                                            </div>
+                                        }
+
+                                        <a href="~/Profile/CreateProfileImage" id="uploadProfileImage">Upload Profile Image</a>
+                                    }
+                                </div>
+                                <div class="infoContainer">
+                                    <div class="media-body mb-3 text-white">
+                                        <h4>@Model.AppUser.UserInfo.FirstName @Model.AppUser.UserInfo.LastName</h4>
+                                        @if (Model.AppUser.UserInfo.Country != null)
+                                        {
+                                            <p class="small"> <i class="fas fa-map-marker-alt mr-2"></i>@Model.AppUser.UserInfo.Country</p>
+                                        }
+
+                                    </div>
+
+                                </div>
+                                @if (Model.AppUser.UserInfo.CoverImage != null)
+                                {
+                                    <form asp-controller="Profile" asp-action="DeleteCoverImage" method="post">
+                                        <button type="submit" class="btn btn-outline-dark" id="CoverImageDeleteButton">Delete</button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <a href="/Profile/CreateCoverImage" id="uploadCoverImage"><i class="fa fa-camera" aria-hidden="true"></i>Upload Cover Image</a>
+                                }
+
+                            </div>
+
+                        </div>
+
+
+
+
+                        <div class="bg-light p-4 d-flex justify-content-end text-center">
+                            <a asp-controller="Profile" asp-action="EditProfileInfo" class="btn btn-secondary"><i class="fas fa-edit" aria-hidden="true"></i>Edit Profile Info</a>
+                        </div>
+
+                        <div class="px-4 py-3">
+                            <h5 class="mb-0">Bio</h5>
+                            <div class="p-3 rounded shadow-sm bg-light">
+                                <div class="add-bio">
+                                    @if (Model.AppUser.UserInfo.Bio != null)
+                                    {
+                                        <p class="font-italic mb-0">@Model.AppUser.UserInfo.Bio.Text</p>
+                                    }
+
+                                    <button id="addBioModalBtn" type="button">Add Bio</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="px-4 py-3">
+                            <h5 class="mb-0">Details</h5>
+                            <div class="p-4 rounded shadow-sm bg-light">
+                                @if (Model.AppUser.UserInfo.Gender != null)
+                                {
+                                    <p class="font-italic mb-0">Gender: @Model.AppUser.UserInfo.Gender</p>
+                                }
+                                @if (Model.AppUser.UserInfo.DateOfBirth != null)
+                                {
+                                    <p class="font-italic mb-0">Birth Date: @Model.AppUser.UserInfo.GetShortDate()</p>
+                                }
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="bg-white shadow rounded contactsTableDiv" style=" ">
+                    <table class="table table-striped" id="contactsTable">
+                        <thead>
+                            <tr>
+                                <th scope="col">Contacts</th>
+                            </tr>
+                        </thead>
+
+                        @if (Model.FriendsList.Count != 0)
+                        {
+                            <tbody>
+                                @foreach (var friend in Model.FriendsList)
+                                {
+                                    <tr>
+                                        <th scope="row">
+                                            @if (friend.User.UserInfo.ProfileImage != null)
+                                            {
+                                                <img src="~/Tools/ProfileImages/@friend.User.UserInfo.ProfileImage.ImageName" asp-append-version="true" alt="Profile Image" class="rounded-circle" id="contactsProfileImage" />
+                                            }
+                                            else
+                                            {
+                                                if (friend.User.UserInfo.Gender == GenderEnum.Female)
+                                                {
+                                                    <img src="~/Tools/Images/ProfileImageFemaleTemplate.png" asp-append-version="true" alt="Profile Image" class="rounded-circle" id="contactsProfileImage" />
+                                                }
+                                                else
+                                                {
+                                                    <img src="~/Tools/Images/ProfileImageMaleTemplate.png" asp-append-version="true" alt="Profile Image" class="rounded-circle" id="contactsProfileImage" />
+                                                }
+                                            }
+                                            <span>
+                                                <a asp-controller="User" asp-action="UserProfileView" asp-route-Id="@friend.User.Id">@friend.User.UserName</a>
+                                            </span>
+                                        </th>
+
+                                    </tr>
+                                }
+
+                            </tbody>
+                        }
+                    </table>
+                </div>
+
+                @if (Model.AppUser.Posts.Count() != 0)
+                {
+
+                    @foreach (var post in Model.AppUser.Posts.OrderByDescending(x => x.Created))
+                    {
+                        <div class="col-lg-7 mx-auto" style="margin-top:1.5rem;">
+                            <div class="p-4 rounded shadow-sm bg-light">
+                                <div style="display: flex; flex-direction: row; align-items: center;">
+
+                                    @if (post.User.UserInfo.ProfileImage != null)
+                                    {
+
+                                        <img src="~/Tools/ProfileImages/@post.User.UserInfo.ProfileImage.ImageName" asp-append-version="true" alt="Profile Image" class="rounded-circle" id="peopleProfileImages" />
+
+                                    }
+                                    else
+                                    {
+                                        if (post.User.UserInfo.Gender == GenderEnum.Female)
+                                        {
+                                            <img src="~/Tools/Images/ProfileImageFemaleTemplate.png" alt="Profile Image" class="rounded-circle" id="peopleProfileImages" />
+
+                                        }
+                                        else
+                                        {
+                                            <img src="~/Tools/Images/ProfileImageMaleTemplate.png" alt="Profile Image" class="rounded-circle" id="peopleProfileImages" />
+                                        }
+                                    }
+
+                                    <span style="display: flex; flex-direction: column; flex-grow: 1;">
+                                        <a asp-controller="Profile" asp-action="Profile" data-hover="@post.User.UserName" class="fullname">@post.User.UserInfo.FirstName @post.User.UserInfo.LastName</a>
+                                        @if (post.Edited != null)
+                                        {
+                                            <span>@post.Edited</span>
+                                        }
+                                        else
+                                        {
+                                            <span>@post.Created</span>
+                                        }
+                                    </span>
+
+                                    <div>
+                                        <a asp-controller="Profile" asp-action="EditPost" asp-route-PostId="@post.PostId" style="margin-right: 5px;">Edit Post</a>
+                                        <form asp-controller="Profile" asp-action="DeletePost">
+                                            <input type="hidden" name="PostId" value="@post.PostId" />
+                                            <button type="submit" class="btn btn-dark">Delete</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <div>
+                                        <p>@post.Text</p>
+
+                                    </div>
+
+                                </div>
+
+                                <div style="display: flex; justify-content:center;margin-top: 1rem;">
+                                    @if (post.PostImage != null)
+                                    {
+                                        <img src="~/Tools/PostImages/@post.PostImage.ImageName" asp-append-version="true" alt="Post Image" class="rounded " id="ProfileImage" />
+                                    }
+                                </div>
+                                <div>
+                                    @if (post.PostLikes != null || post.MainComments != null)
+                                    {
+                                        <span id="numOfLikesSpan">@post.PostLikes.Count() Likes</span>
+                                        {
+                                            int NumOfSubComs = 0;
+                                            foreach (var subCom in post.MainComments)
+                                            {
+                                                NumOfSubComs += subCom.SubComments.Count();
+                                            }
+                                            int NumOfComs = post.MainComments.Count() + NumOfSubComs;
+
+                                            <span id="numOfComsSpan">@NumOfComs Comments</span>
+                                        }
+                                    }
+                                </div>
+                                <hr />
+                                <div class="post-btns-div">
+                                    <div id="likeBtnDiv">
+                                        @if (post.PostLikes.Any(x => x.LikerId == Model.AppUser.Id))
+                                        {
+                                            <button onclick="UnlikePost(@post.PostId)" class="btn btn-light post-comment-btn"><i class="fa fa-thumbs-down" aria-hidden="true"></i><span>Unlike</span></button>
+                                        }
+                                        else
+                                        {
+                                            <button onclick="LikePost(@post.PostId)" class="btn btn-light post-comment-btn"><i class="fa fa-heart" aria-hidden="true"></i><span>Like</span></button>
+                                        }
+
+                                    </div>
+                                    <button style="display:none" id="likeBtn" onclick="LikePost(@post.PostId)" class="btn btn-light post-comment-btn"><i class="fa fa-heart" aria-hidden="true"></i><span>Like</span></button>
+                                    <button style="display:none" id="unlikeBtn" onclick="UnlikePost(@post.PostId)" class="btn btn-light post-comment-btn"><i class="fa fa-thumbs-down" aria-hidden="true"></i><span>Unlike</span></button>
+                                    <div>
+                                        <button onclick="ShowCommentDiv()" class="btn btn-light post-comment-btn">Comment</button>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div id="leaveCommentDiv">
+                                    <div class="write-comment-div">
+                                        <form onsubmit="CreateMainComment(event)" class="createMainCommentForm" asp-controller="Profile" asp-action="ComentOnPost">
+                                            <span>
+                                                @if (Model.AppUser.UserInfo.ProfileImage != null)
+                                                {
+                                                    <img src="~/Tools/ProfileImages/@Model.AppUser.UserInfo.ProfileImage.ImageName" asp-append-version="true" alt="Profile Image" class="rounded-circle sm-prof-img" />
+                                                }
+                                                else
+                                                {
+                                                    if (Model.AppUser.UserInfo.Gender == GenderEnum.Female)
+                                                    {
+                                                        <img src="~/Tools/Images/ProfileImageFemaleTemplate.png" alt="Profile Image" class="rounded-circle sm-prof-img" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="~/Tools/Images/ProfileImageMaleTemplate.png" alt="Profile Image" class="rounded-circle sm-prof-img" />
+                                                    }
+                                                }
+                                            </span>
+                                            <div class="group-focus-div">
+                                                <input type="text" class="input100 input99" placeholder="Write a comment..." name="CommentText" required />
+                                                <span class="focus-input100"></span>
+                                            </div>
+                                            <input type="hidden" name="PostId" value="@post.PostId" />
+                                            <input type="hidden" name="MainCommentId" value="" />
+                                            <button type="submit" class="leave-comment-btn"><i class="fa fa-comment-dots fa-2x" aria-hidden="true"></i></button>
+                                        </form>
+                                    </div>
+
+                                    <div id="mainCommentUserInfoDiv" style="display:none">
+                                        <div class="main-comment-body">
+                                            <span>
+                                                @if (Model.AppUser.UserInfo.ProfileImage != null)
+                                                {
+                                                    <img src="~/Tools/ProfileImages/@Model.AppUser.UserInfo.ProfileImage.ImageName" asp-append-version="true" alt="Profile Image" class="rounded-circle sm-prof-img" />
+                                                }
+                                                else
+                                                {
+                                                    if (Model.AppUser.UserInfo.Gender == GenderEnum.Female)
+                                                    {
+                                                        <img src="~/Tools/Images/ProfileImageFemaleTemplate.png" alt="Profile Image" class="rounded-circle sm-prof-img" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="~/Tools/Images/ProfileImageMaleTemplate.png" alt="Profile Image" class="rounded-circle sm-prof-img" />
+                                                    }
+                                                }
+                                            </span>
+                                            <div class="comment-body">
+
+                                                <div class="comment-time-div">
+                                                    <button onclick="ShowNewSubCommentDiv(this.id)" class="leave-comment-btn leave-new-comment-btn">Reply</button>
+                                                    <button class="leave-comment-btn leave-new-comment-btn">Edit</button>
+                                                    <button onclick="DeleteNewMainComment(this.id)" class="leave-comment-btn leave-new-comment-btn">Delete</button>
+
+
+                                                </div>
+
+                                                <div class="leaveSubCommentDiv newSubCommentDiv" style="display:none">
+                                                    <div class="write-sub-comment-div">
+                                                        <form onsubmit="CreateSubComment(event)" class="createMainCommentForm" asp-controller="Profile" asp-action="ComentOnPost">
+                                                            <span>
+                                                                @if (Model.AppUser.UserInfo.ProfileImage != null)
+                                                                {
+                                                                    <img src="~/Tools/ProfileImages/@Model.AppUser.UserInfo.ProfileImage.ImageName" asp-append-version="true" alt="Profile Image" class="rounded-circle sm-prof-img" />
+                                                                }
+                                                                else
+                                                                {
+                                                                    if (Model.AppUser.UserInfo.Gender == GenderEnum.Female)
+                                                                    {
+                                                                        <img src="~/Tools/Images/ProfileImageFemaleTemplate.png" alt="Profile Image" class="rounded-circle sm-prof-img" />
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <img src="~/Tools/Images/ProfileImageMaleTemplate.png" alt="Profile Image" class="rounded-circle sm-prof-img" />
+                                                                    }
+                                                                }
+                                                            </span>
+                                                            <div class="group-focus-div">
+                                                                <input type="text" class="input100 input99 subComInput" placeholder="Write a comment..." name="CommentText" required />
+                                                                <span class="focus-input100"></span>
+                                                            </div>
+                                                            <input type="hidden" name="PostId" value="@post.PostId" />
+                                                            <input type="hidden" name="MainCommentId" id="" />
+                                                            <button type="submit" class="leave-comment-btn"><i class="fa fa-comment-dots fa-2x" aria-hidden="true"></i></button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                    @if (post.MainComments.Count != 0)
+                                    {
+                                        <button id="viewComments" onclick="ShowMainComments()" class="view-comment-btn">View Comments</button>
+                                    }
+
+                                    @*<div id="mainCommentsDiv" class="main-comments-div" style="display:none;">
+                                        @{
+                                            await Html.RenderPartialAsync("_MainComment", new UserInfoCollectionViewModel { AppUser = Model.AppUser, MainCommentViewModel = new MainCommentViewModel { PostId = post.PostId, Post = post } });
+                                        }
+                                    </div>*@
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+
+
+
+            <div id="myModal" class="modal">
+                <span class="close">&times;</span>
+                <img class="modal-content" id="img01">
+            </div>
+
+            <!-- The Modal -->
+            <div id="createPostModal" class="postModal">
+
+                <!-- Modal content -->
+                <div class="postModal-content">
+                    <div class="postModal-content-two">
+                        <span class="closePostModal">&times;</span>
+                        <form asp-controller="Profile" asp-action="AddBio" method="post">
+
+                            <div style=" display: flex; justify-content:center;">
+                                <span style="padding-top: 25px; font-size: 25px;font-family: Montserrat-Regular;">
+                                    Add Bio
+                                </span>
+                            </div>
+
+                            <div style=" padding: 25px;">
+                                <div class="wrap-input100" data-validate="Message is required">
+                                    <textarea class="input100" name="Text" placeholder="Describe Bio" required>@if (Model.AppUser.UserInfo.Bio != null)
+                                    {
+                                        @Model.AppUser.UserInfo.Bio.Text
+                                    }</textarea>
+                                    <span class="focus-input100"></span>
+                                </div>
+                            </div>
+
+                            <div style="display: flex;justify-content: center">
+                                <button type="submit" style="width: 40%;" class="btn btn-dark">Create</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        }
+    }
+
+</main>
+
+<script>
+    // Get the modal
+    var modal = document.getElementById("myModal");
+
+    // Get the image and insert it inside the modal - use its "alt" text as a caption
+    var img = document.getElementById("ProfileImage");
+    var modalImg = document.getElementById("img01");
+    img.onclick = function () {
+        modal.style.display = "block";
+        modalImg.src = this.src;
+    }
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+
+    var modalTwo = document.getElementById("createPostModal");
+    var btn = document.getElementById("addBioModalBtn");
+    var spanTwo = document.getElementsByClassName("closePostModal")[0];
+    btn.onclick = function () {
+        modalTwo.style.display = "block";
+    }
+    spanTwo.onclick = function () {
+        modalTwo.style.display = "none";
+    }
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modalTwo.style.display = "none";
+        }
+    }
+</script>

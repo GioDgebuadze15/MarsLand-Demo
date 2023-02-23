@@ -1,0 +1,236 @@
+﻿@model UserInfoCollectionViewModel
+@{
+    Layout = "_ProfileLayout";
+}
+
+<main>
+    <div class="row py-3 px-4 createPostContainer">
+        <div class="col-lg-7 mx-auto">
+            <div class="px-4 py-3">
+                <div class="p-4 rounded shadow-sm bg-light">
+                    <input class="create-post-input" id="createPostModalBtn" type="text" placeholder="What are you thinking about?" />
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    @if (Model.FriendsPosts != null)
+    {
+        @if (Model.FriendsPosts.Count != 0)
+        {
+            <div class="row py-3 px-4 createPostContainer">
+                @foreach (var post in Model.FriendsPosts.OrderByDescending(x => x.Created))
+                {
+                    <div class="col-lg-7 mx-auto">
+                        <div class="px-4 py-3">
+                            <div class="p-4 rounded shadow-sm bg-light">
+                                <div style="display: flex; flex-direction: row; align-items: center;">
+                                    @if (post.User.UserInfo.ProfileImage != null)
+                                    {
+
+                                        <img src="~/Tools/ProfileImages/@post.User.UserInfo.ProfileImage.ImageName" asp-append-version="true" alt="Profile Image" class="rounded-circle" id="peopleProfileImages" />
+
+                                    }
+                                    else
+                                    {
+                                        if (post.User.UserInfo.Gender == GenderEnum.Female)
+                                        {
+                                            <img src="~/Tools/Images/ProfileImageFemaleTemplate.png" alt="Profile Image" class="rounded-circle" id="peopleProfileImages" />
+
+                                        }
+                                        else
+                                        {
+                                            <img src="~/Tools/Images/ProfileImageMaleTemplate.png" alt="Profile Image" class="rounded-circle" id="peopleProfileImages" />
+                                        }
+                                    }
+
+                                    <span style="display: flex; flex-direction: column;">
+                                        <a asp-controller="User" asp-action="UserProfileView" asp-route-Id="@post.UserId" data-hover="@post.User.UserName" class="fullname">@post.User.UserInfo.FirstName @post.User.UserInfo.LastName</a>
+                                        @if (post.Edited != null)
+                                        {
+                                            <span>@post.Edited</span>
+                                        }
+                                        else
+                                        {
+                                            <span>@post.Created</span>
+                                        }
+                                    </span>
+
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <div>
+                                        <p>@post.Text</p>
+
+                                    </div>
+
+                                </div>
+
+                                <div style="display: flex; justify-content:center;margin-top: 1rem;">
+                                    @if (post.PostImage != null)
+                                    {
+                                        <img src="~/Tools/PostImages/@post.PostImage.ImageName" asp-append-version="true" alt="Post Image" class="rounded " id="ProfileImage" />
+                                    }
+                                </div>
+                                <div>
+                                    @if (post.PostLikes != null)
+                                    {
+                                        <span id="@post.PostId" class="numOfLikesSpan">@post.PostLikes.Count() Likes</span>
+                                    }
+                                    <span id="@post.PostId" class="numOfComsSpan">@post.GetTotalComments Comments</span>
+                                </div>
+                                <hr />
+                                <div class="post-btns-div">
+                                    <div id="@post.PostId" class="likeBtnDiv">
+                                        <vc:like vm="@Model"
+                                                 post-id="@post.PostId">
+                                        </vc:like>
+
+                                    </div>
+
+                                    <div>
+                                        <button onclick="ShowPostComments(@post.PostId)" class="btn btn-light post-comment-btn">Comment</button>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div id="@post.PostId" class="leaveCommentDiv" style="display:none">
+                                    <div class="write-comment-div">
+                                        <form onsubmit="sendComment(event)" class="createMainCommentForm" asp-controller="Forum" asp-action="CommentOnPost">
+
+                                            <span>
+                                                @if (Model.AppUser.UserInfo.ProfileImage != null)
+                                                {
+                                                    <img src="~/Tools/ProfileImages/@Model.AppUser.UserInfo.ProfileImage.ImageName" asp-append-version="true" alt="Profile Image" class="rounded-circle sm-prof-img" />
+                                                }
+                                                else
+                                                {
+                                                    if (Model.AppUser.UserInfo.Gender == GenderEnum.Female)
+                                                    {
+                                                        <img src="~/Tools/Images/ProfileImageFemaleTemplate.png" alt="Profile Image" class="rounded-circle sm-prof-img" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="~/Tools/Images/ProfileImageMaleTemplate.png" alt="Profile Image" class="rounded-circle sm-prof-img" />
+                                                    }
+                                                }
+                                            </span>
+                                            <div class="group-focus-div">
+                                                <input id="@post.PostId" type="text" class="input100 input99 main-comment-input" placeholder="Write a comment..." name="CommentText" required />
+                                                <span class="focus-input100"></span>
+                                            </div>
+                                            <input type="hidden" name="PostId" value="@post.PostId" />
+                                            <input type="hidden" name="MainCommentId" value="" />
+                                            <button type="submit" class="leave-comment-btn"><i class="fa fa-comment-dots fa-2x" aria-hidden="true"></i></button>
+                                        </form>
+                                    </div>
+
+
+
+
+                                    @if (post.GetTotalComments != 0)
+                                    {
+                                        <button id="@post.PostId" onclick="ShowMainComments(@post.PostId)" class="view-comment-btn">View Comments</button>
+                                    }
+
+                                    <div id="@post.PostId" class="main-comment-component" style="display:none">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+
+
+        }
+    }
+
+    <!-- The Modal -->
+    <div id="createPostModal" class="postModal">
+
+        <!-- Modal content -->
+        <div class="postModal-content">
+            <div class="postModal-content-two">
+                <span class="closePostModal">&times;</span>
+                <form asp-controller="Forum" asp-action="CreatePost" enctype="multipart/form-data" method="post">
+
+                    <div style=" display: flex; justify-content:center;">
+                        <span style="padding-top: 25px; font-size: 25px;font-family: Montserrat-Regular;">
+                            Create Post
+                        </span>
+                    </div>
+
+                    <div style="margin-left: 50px;">
+                        <select name="Privacy">
+                            @foreach (var item in Enum.GetValues(typeof(PostPrivacyEnum)))
+                            {
+                                <option value="@item">@item</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div style=" padding: 25px;">
+                        <div class="wrap-input100" data-validate="Message is required">
+                            <textarea class="input100" name="Text" placeholder="What are you thinking about?" required></textarea>
+                            <span class="focus-input100"></span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <input style="display:none" value="@User.Identity.Name" name="identityUsername" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div style=" display: flex; justify-content: center; margin-bottom: 20px;">
+                            <input asp-for="PostViewModel.ImageFile" type="file" accept="image/*" name="ImageFile" />
+                            <span asp-validation-for="PostViewModel.ImageFile" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div style="display: flex;justify-content: center">
+                        <button type="submit" style="width: 40%;" class="btn btn-dark">Post</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+
+</main>
+
+
+<script>
+    // Get the modal
+    var modal = document.getElementById("createPostModal");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("createPostModalBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("closePostModal")[0];
+
+    // When the user clicks the button, open the modal
+    btn.onclick = function () {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+</script>
+
+<script src="~/signalr/signalr.js"></script>
+<script src="~/Js/Forum.js"></script>
+<script src="~/Js/CommentBuilder.js"></script>
+<script src="~/Js/SubCommentBuilder.js"></script>

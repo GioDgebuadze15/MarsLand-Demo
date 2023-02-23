@@ -1,0 +1,77 @@
+﻿@{
+    Layout = "_ProfileLayout";
+}
+@model UserInfoCollectionViewModel
+<main>
+    <div class="requestMenu">
+        <div>
+            <a href="/Friends/SentFriendRequests">Sent Friend Requests</a>
+
+        </div>
+        <div>
+            <a href="/Friends/ReceivedFriendRequests">Received Friend Requests</a>
+
+        </div>
+        <div>
+            <a href="/User/AllUsers">All Registered Users</a>
+
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        @if (Model.FriendsList.Count != 0)
+        {
+            @foreach (var friend in Model.FriendsList)
+            {
+                <div class="row py-3 px-4">
+                    <div class="col-lg-7 mx-auto">
+                        <div class="row">
+                            <div class="people-nearby">
+                                <div class="people-nearby-div">
+                                    @if (friend.User.UserInfo.ProfileImage != null)
+                                    {
+
+                                        <img src="~/Tools/ProfileImages/@friend.User.UserInfo.ProfileImage.ImageName" asp-append-version="true" alt="Profile Image" class="rounded-circle" id="peopleProfileImages" />
+
+                                    }
+                                    else
+                                    {
+                                        if (friend.User.UserInfo.Gender == GenderEnum.Female)
+                                        {
+                                            <img src="~/Tools/Images/ProfileImageFemaleTemplate.png" alt="Profile Image" class="rounded-circle" id="peopleProfileImages" />
+
+                                        }
+                                        else
+                                        {
+                                            <img src="~/Tools/Images/ProfileImageMaleTemplate.png" alt="Profile Image" class="rounded-circle" id="peopleProfileImages" />
+                                        }
+                                    }
+
+                                    <div>
+                                        <span>
+                                            <a asp-controller="User" asp-action="UserProfileView" asp-route-Id="@friend.User.Id" data-hover="@friend.User.UserName" class="fullname">@friend.User.UserInfo.FirstName @friend.User.UserInfo.LastName</a>
+                                        </span>
+
+                                    </div>
+                                </div>
+                                <div>
+                                    <form asp-controller="Messanger" asp-action="CreatePrivateRoom" asp-route-userId="@friend.User.Id" style="display: contents;">
+                                        <button type="submit" class="btn btn-secondary float-right align-middle" style="margin-top:18px;margin-right: 10px;"><i class="fa fa-envelope" aria-hidden="true"></i>Message</button>
+                                    </form>
+                                    <form asp-controller="Friends" asp-action="RemoveFriend" method="post" style="display: contents;">
+                                        <input style="display:none" value="@friend.FriendRequestId" name="id" />
+                                        <button type="submit" class="btn btn-secondary float-right align-middle" style="margin-top:18px;" id="sendFriendRequest"><i class="fa fa-trash" aria-hidden="true"></i>Remove</button>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            }
+        }
+    </div>
+
+</main>

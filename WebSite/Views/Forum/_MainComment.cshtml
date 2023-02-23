@@ -1,0 +1,79 @@
+﻿@model UserInfoCollectionViewModel
+@{
+    var userId = User.GetUserId();
+}
+@if (Model.CommentViewModel.MainComments.Count != 0)
+{
+    <div id="@Model.CommentViewModel.PostId" class="main-comment-body">
+
+        @foreach (var mainComment in Model.CommentViewModel.MainComments.OrderByDescending(x => x.Created))
+        {
+            <div class="comment-body-div" id="@mainComment.Id">
+                <span>
+                    @if (mainComment.User.UserInfo.ProfileImage != null)
+                    {
+                        <img src="~/Tools/ProfileImages/@mainComment.User.UserInfo.ProfileImage.ImageName" asp-append-version="true" alt="Profile Image" class="rounded-circle sm-prof-img com-prof-img" />
+                    }
+                    else
+                    {
+                        if (mainComment.User.UserInfo.Gender == GenderEnum.Female)
+                        {
+                            <img src="~/Tools/Images/ProfileImageFemaleTemplate.png" alt="Profile Image" class="rounded-circle sm-prof-img com-prof-img" />
+                        }
+                        else
+                        {
+                            <img src="~/Tools/Images/ProfileImageMaleTemplate.png" alt="Profile Image" class="rounded-circle sm-prof-img com-prof-img" />
+                        }
+                    }
+                </span>
+                <div class="group-comment-div">
+                    <div class="comment-author">
+                        <a asp-controller="User" asp-action="UserProfileView" asp-route-Id="@mainComment.User.Id" class="fullname">@mainComment.User.UserInfo.FirstName @mainComment.User.UserInfo.LastName</a>
+                    </div>
+                    <div class="comment-text-div">
+                        <div id="@mainComment.Id" class="comment-after-edit">
+                            @mainComment.Text
+                            <input type="hidden" name="PostId" value="@Model.CommentViewModel.PostId" />
+                            <input type="hidden" id="@mainComment.Id" class="numOfSubComsInMainCom" value="@mainComment.SubComments.Count()" />
+                        </div>
+                        <div class="comment-time-div">
+                            @mainComment.GetTimeDuration()
+                            <input type="hidden" value="@mainComment.Id" id="replyMainComment" />
+                            <button onclick="ShowSubCommentDiv(@mainComment.Id)" class="leave-comment-btn">Reply</button>
+
+                            <div id="@mainComment.Id" class="mainCommBtnDiv">
+                                <vc:main-comment-button vm="@Model"
+                                                        main-comment-id="@mainComment.Id">
+                                </vc:main-comment-button>
+                            </div>
+
+
+
+                            <div id="@mainComment.Id" class="sub-comment-component" style="display:none">
+                                @{
+                                    await Html.RenderPartialAsync("_SubComment", new UserInfoCollectionViewModel
+                                    {
+                                        AppUser = Model.AppUser,
+                                        FriendsPosts = Model.FriendsPosts,
+                                        CommentViewModel = new CommentViewModel
+                                        {
+                                            SubComments = new List<SubComment>(mainComment.SubComments),
+                                            MainCommentId = mainComment.Id,
+                                            Post = Model.CommentViewModel.Post,
+                                            PostId = Model.CommentViewModel.PostId
+                                        }
+                                    });
+                                }
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        }
+    </div>
+}
+

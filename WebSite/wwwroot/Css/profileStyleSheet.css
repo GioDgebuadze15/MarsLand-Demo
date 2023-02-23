@@ -1,0 +1,657 @@
+﻿html {
+    width: 100vw;
+}
+
+body {
+    background: #654ea3;
+    background: linear-gradient(to right, #e96443, #904e95);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    padding-bottom: 38px;
+}
+
+header {
+    position: absolute;
+    top: 0;
+    min-width: 100vw;
+}
+
+main {
+    padding-top: 80px;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+}
+
+
+.profileImageContainer {
+    position: absolute;
+    margin-left: 70px;
+    margin-top: 50px;
+}
+/*#ProfileImageDeleteButton{
+
+}
+#ProfileImageDeleteDiv {
+    position:absolute;
+    visibility:hidden;
+}*/
+#ProfileImage {
+    object-fit: cover;
+    width: 200px;
+    height: 200px;
+    padding: 0;
+}
+/*#ProfileImage:hover #ProfileImageDeleteDiv {
+    visibility: visible;
+}*/
+
+
+/*.profile-head {
+    transform: translateY(5rem)
+}*/
+
+
+#ProfileImageDeleteDiv {
+    position: relative;
+}
+
+#ProfileImageDeleteButton {
+    opacity: 0;
+    transition: opacity .35s ease;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 200px;
+    color: #ffffff;
+    border: none;
+}
+
+    #ProfileImageDeleteButton:hover {
+        transition: opacity 1.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+.profileImageContainer:hover #ProfileImageDeleteButton {
+    opacity: 1;
+}
+
+
+.profileImage {
+    object-fit: cover;
+    width: 200px;
+    height: 200px;
+    padding: 0;
+}
+
+#uploadProfileImage {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 200px;
+    color: #ffffff;
+    text-align: center;
+    border: solid 1px;
+    border-color: #000000;
+    border-radius: 3px;
+    background-color: #343a40;
+}
+
+
+.cover {
+    position: relative;
+}
+
+    .cover:hover #CoverImageDeleteButton {
+        opacity: 1;
+        transition: opacity 1.0s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+#uploadCoverImage {
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: #ffffff;
+}
+
+#CoverImageDeleteButton {
+    opacity: 0;
+    transition: opacity .35s ease;
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: #000000;
+    border: none
+}
+
+    #CoverImageDeleteButton:hover {
+        color: #ffffff;
+    }
+
+.infoContainer {
+    position: absolute;
+    margin-left: 280px;
+}
+
+#ProfileImage {
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+    #ProfileImage:hover {
+        opacity: 0.7;
+    }
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 0px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
+
+/* Modal Content (image) */
+.modal-content {
+    margin: auto;
+    display: block;
+    width: auto;
+    max-height: 100%;
+}
+
+
+/* Add Animation */
+.modal-content {
+    -webkit-animation-name: zoom;
+    -webkit-animation-duration: 0.6s;
+    animation-name: zoom;
+    animation-duration: 0.6s;
+}
+
+@-webkit-keyframes zoom {
+    from {
+        -webkit-transform: scale(0)
+    }
+
+    to {
+        -webkit-transform: scale(1)
+    }
+}
+
+@keyframes zoom {
+    from {
+        transform: scale(0)
+    }
+
+    to {
+        transform: scale(1)
+    }
+}
+
+/* The Close Button */
+.close {
+    position: absolute;
+    top: 5px;
+    right: 25px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+    z-index: 20;
+}
+
+    .close:hover,
+    .close:focus {
+        color: #bbb;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+#img01 {
+    border: none;
+}
+
+/* 100% Image Width on Smaller Screens */
+/*@media only screen and (max-width: 800px) {
+    .modal-content {
+        width: 70%;
+        height: auto;
+        margin-top: 9%;
+    }
+}
+
+@media only screen and (max-width: 650px) {
+    .modal-content {
+        width: 50%;
+        height: auto;
+        margin-top: 3%;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .modal-content {
+        width: 70%;
+        height: auto;
+        min-height: 338px;
+    }
+}*/
+
+
+#contactsProfileImage {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    padding: 0;
+    margin: 0;
+    float: left;
+}
+
+th[scope="col"] {
+    text-align: center;
+}
+
+th[scope="row"] {
+    text-align: end;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.contactsTableDiv {
+    width: inherit;
+    height: inherit;
+    max-height: 80vh;
+    position: absolute;
+    right: 0;
+    margin-right: 13px;
+    overflow-y: scroll;
+}
+
+    .contactsTableDiv::-webkit-scrollbar {
+        display: none;
+    }
+
+.contactsTableDiv {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+#contactsTable a {
+    color: #000000;
+    text-decoration: none;
+}
+
+    #contactsTable a:hover {
+        color: #000000;
+        text-decoration: underline;
+    }
+
+.create-post-input {
+    border-color: white;
+    border-radius: 10px;
+    width: 100%;
+    text-align: center;
+    color: transparent;
+}
+
+    .create-post-input:focus {
+        cursor: default;
+        outline-style: none;
+    }
+
+/* The Modal (background) */
+.postModal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.postModal-content {
+    background-color: #fefefe;
+    margin: auto;
+    border-radius: 10px;
+    width: 400px;
+}
+
+.postModal-content-two {
+    height: 400px;
+    width: 400px;
+}
+
+/* The Close Button */
+.closePostModal {
+    color: #aaaaaa;
+    font-size: 28px;
+    font-weight: bold;
+    float: right;
+    margin-top: -15px;
+    z-index: 20;
+}
+
+    .closePostModal:hover,
+    .closePostModal:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+
+textarea {
+    outline: none;
+    border: none;
+}
+
+    textarea:focus {
+        border-color: transparent !important;
+    }
+
+        textarea:focus::-webkit-input-placeholder {
+            color: transparent;
+        }
+
+        textarea:focus:-moz-placeholder {
+            color: transparent;
+        }
+
+        textarea:focus::-moz-placeholder {
+            color: transparent;
+        }
+
+        textarea:focus:-ms-input-placeholder {
+            color: transparent;
+        }
+
+
+    textarea::-webkit-input-placeholder {
+        color: #aaaaaa;
+    }
+
+    textarea:-moz-placeholder {
+        color: #aaaaaa;
+    }
+
+    textarea::-moz-placeholder {
+        color: #aaaaaa;
+    }
+
+    textarea:-ms-input-placeholder {
+        color: #aaaaaa;
+    }
+
+
+    textarea.input100 {
+        min-height: 150px;
+        border-radius: 25px;
+        padding: 14px 30px;
+        resize: none;
+    }
+
+.wrap-input100 {
+    position: relative;
+    width: 100%;
+    z-index: 1;
+    margin-bottom: 10px;
+}
+
+.input100 {
+    display: block;
+    width: 100%;
+    background: #e6e6e6;
+    font-family: Montserrat-Bold;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #666666;
+}
+
+.focus-input100 {
+    display: block;
+    position: absolute;
+    border-radius: 25px;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0px 0px 0px 0px;
+    color: rgba(132,106,221, 0.5);
+}
+
+.input100:focus + .focus-input100 {
+    -webkit-animation: anim-shadow 0.5s ease-in-out forwards;
+    animation: anim-shadow 0.5s ease-in-out forwards;
+}
+
+@-webkit-keyframes anim-shadow {
+    to {
+        box-shadow: 0px 0px 60px 25px;
+        opacity: 0;
+    }
+}
+
+@keyframes anim-shadow {
+    to {
+        box-shadow: 0px 0px 60px 25px;
+        opacity: 0;
+    }
+}
+
+
+/*.input100:focus + .focus-input100 {
+    color: #846add;
+    padding-left: 22px;
+}*/
+
+.editPostModal {
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 50px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.editPostModal-content {
+    background-color: #fefefe;
+    margin: auto;
+    border-radius: 10px;
+    width: 600px;
+}
+
+.editPostModal-content-two {
+    height: 600px;
+    width: 600px;
+}
+
+@media only screen and (max-width: 992px) {
+    #contactsTable {
+        display: none;
+    }
+}
+
+.add-bio {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+}
+
+    .add-bio > button {
+        background-color: transparent;
+        border: none;
+    }
+
+        .add-bio > button:hover {
+            text-decoration: underline;
+        }
+
+    .add-bio > p {
+        margin-left: 0;
+    }
+
+.edit-info-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.fullname {
+    position: relative;
+}
+
+    .fullname:hover {
+    }
+
+        .fullname:hover:before {
+            /* ------- THIS IS THE MAGIC ----------------*/
+            content: attr(data-hover);
+            display: block;
+            position: absolute;
+            bottom: 100%;
+        }
+
+        .fullname:hover:after {
+            content: "";
+        }
+
+.post-btns-div {
+    display: flex;
+    justify-content: space-around;
+}
+
+hr:first-of-type {
+    margin-bottom: 0px;
+}
+
+hr:nth-of-type(2) {
+    margin-top: 0px;
+}
+
+.post-comment-btn {
+    padding: 0;
+}
+
+    .post-comment-btn:hover {
+        text-decoration: underline;
+    }
+
+
+.createMainCommentForm {
+    display: flex;
+    flex-grow: 1;
+}
+
+.write-comment-div {
+    display: flex;
+}
+
+.main-comment-group-body {
+    display: flex;
+}
+
+.sm-prof-img {
+    height: 32px;
+    width: 32px;
+}
+
+.input99 {
+    border: none;
+    outline: none;
+    border-radius: 25px;
+    text-indent: 7px;
+    height: 100%;
+}
+
+
+.leave-comment-btn {
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    width: 50px;
+}
+
+    .leave-comment-btn:hover {
+        text-decoration: underline;
+    }
+
+.group-focus-div {
+    position: relative;
+    z-index: 1;
+    flex-grow: 1;
+    margin-left: 7px;
+}
+
+.view-comment-btn {
+    border: none;
+    background-color: transparent;
+}
+
+    .view-comment-btn:hover {
+        text-decoration: underline;
+    }
+
+.comment-body {
+    display: flex;
+    flex-direction: column-reverse;
+    flex-grow: 1;
+}
+
+.comment-body-div {
+    display: flex;
+    flex-direction: row;
+}
+
+.comment-text-div {
+    flex-grow: 1;
+}
+
+.comment-time-div {
+    font-size: 13px;
+}
+
+    .comment-time-div > button:hover {
+        text-decoration: underline;
+    }
+
+.write-sub-comment-div {
+    display: flex;
+    padding-top: 10px;
+}
+
+.group-comment-div {
+    flex-grow: 1;
+    display: flex;
+    flex-flow: column;
+}
+
+
+.com-prof-img {
+    height: 40px !important;
+    width: 40px !important;
+}
+
+.mainCommBtnDiv {
+    display: inline-block;
+}
+.subCommBtnDiv {
+    display: inline-block;
+}

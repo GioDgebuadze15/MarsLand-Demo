@@ -1,0 +1,19 @@
+﻿@model IEnumerable<Chat>
+@{
+    var userId = User.GetUserId();
+    Layout = "_MessangerLayout";
+
+}
+
+<div class="chat-body">
+    @foreach (var chat in Model)
+    {
+        <a class="room-button" asp-controller="Messanger" asp-action="Chat" asp-route-id="@chat.Id">
+            @chat.Users.FirstOrDefault(x => x.UserId != userId).User.UserName
+        </a>
+    }
+</div>
+
+<div class="footer-text">
+    <strong>Click to load your private chats!</strong>
+</div>

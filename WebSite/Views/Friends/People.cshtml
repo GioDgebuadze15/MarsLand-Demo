@@ -1,0 +1,138 @@
+﻿@{
+    Layout = "_ProfileLayout";
+}
+@model UserInfoCollectionViewModel
+
+
+
+
+<main>
+    <div class="container-fluid">
+        @if (Model.FindPeople.Count != 0)
+        {
+            @foreach (var Person in Model.FindPeople)
+            {
+                <div class="row py-3 px-4">
+                    <div class="col-lg-7 mx-auto">
+                        <div class="row">
+                            <div class="people-nearby">
+
+                                <div class="people-nearby-div">
+                                    @if (Person.ProfileImage != null)
+                                    {
+
+                                        <img src="~/Tools/ProfileImages/@Person.ProfileImage.ImageName" asp-append-version="true" alt="Profile Image" class="rounded-circle" id="peopleProfileImages" />
+
+                                    }
+                                    else
+                                    {
+                                        if (Person.Gender == GenderEnum.Female)
+                                        {
+                                            <img src="~/Tools/Images/ProfileImageFemaleTemplate.png" alt="Profile Image" class="rounded-circle" id="peopleProfileImages" />
+
+                                        }
+                                        else
+                                        {
+                                            <img src="~/Tools/Images/ProfileImageMaleTemplate.png" alt="Profile Image" class="rounded-circle" id="peopleProfileImages" />
+                                        }
+                                    }
+
+                                    <div>
+                                        <span>
+                                            <a asp-controller="User" asp-action="UserProfileView" asp-route-Id="@Person.UserId" data-hover="@Person.User.UserName" class="fullname">@Person.FirstName @Person.LastName</a>
+                                        </span>
+
+                                        @if (Person.Gender != null)
+                                        {
+                                            <p>@Person.Gender</p>
+                                        }
+                                        @if (Person.Country != null)
+                                        {
+                                            <p>@Person.Country</p>
+                                        }
+                                    </div>
+                                    <div class="showPeopleDiv">
+
+                                        <form asp-controller="Messanger" asp-action="CreatePrivateRoom" asp-route-userId="@Person.UserId" style="margin-right: 10px;">
+                                            <button type="submit" class="btn btn-secondary float-right align-middle"><i class="fa fa-envelope" aria-hidden="true"></i>Message</button>
+                                        </form>
+                                        @{
+                                            bool isNull = true;
+                                        }
+                                        @foreach (var friendship in Person.User.FriendShips)
+                                        {
+                                            bool isNeeded = true;
+                                            isNull = false;
+                                            if (friendship.FriendRequest.FriendStatus == FriendRequestEnum.NotAnswered)
+                                            {
+                                                if (friendship.Role == FriendRequestRoleEnum.Receiver)
+                                                {
+                                                    <form asp-controller="Friends" asp-action="CancelFriendRequest" method="post">
+                                                        <input style="display:none" value="@Person.User.Id" name="ReceiverUserId" />
+                                                        <input style="display:none" value="@User.Identity.Name" name="SenderUserName" />
+                                                        <button type="submit" class="btn btn-secondary float-right align-middle" id="sendFriendRequest"><i class="fa fa-user-times" aria-hidden="true"></i>Cancel Request</button>
+                                                    </form>
+                                                }
+                                                else
+                                                {
+                                                    <form asp-controller="Friends" asp-action="AnswerFriendRequest" method="post">
+                                                        <input style="display:none" value="@friendship.FriendRequestId" name="id" />
+                                                        <button type="submit" name="Accept" value="Accept" class="btn btn-secondary" id="sendFriendRequest"><i class="fa fa-check" aria-hidden="true"></i>Accept</button>
+                                                        <button type="submit" name="Decline" value="Decline" class="btn btn-secondary" id="sendFriendRequest"><i class="fa fa-ban" aria-hidden="true"></i>Decline</button>
+                                                    </form>
+                                                }
+
+                                                isNeeded = false;
+                                            }
+                                            if (friendship.FriendRequest.FriendStatus == FriendRequestEnum.Approved)
+                                            {
+                                                <form asp-controller="Friends" asp-action="RemoveFriend" method="post" style="display: contents;">
+                                                    <input style="display:none" value="@friendship.User.Id" name="FriendUserId" />
+                                                    <input style="display:none" value="@User.Identity.Name" name="UserName" />
+                                                    <button type="submit" class="btn btn-secondary float-right align-middle" id="sendFriendRequest"><i class="fa fa-trash" aria-hidden="true"></i>Remove</button>
+                                                </form>
+                                                isNeeded = false;
+                                            }
+                                            if (friendship.FriendRequest.FriendStatus == FriendRequestEnum.Rejected)
+                                            {
+                                                
+                                                isNeeded = false;
+                                            }
+                                            if (isNeeded == true)
+                                            {
+                                                <form asp-controller="Friends" asp-action="SendFriendRequest" method="post" class="showPeople">
+                                                    <input style="display:none" value="@Person.UserId" name="ReceiverUserId" />
+                                                    <input style="display:none" value="@User.Identity.Name" name="SenderUserName" />
+                                                    <button type="submit" class="btn btn-secondary"><i class="fa fa-user-plus" aria-hidden="true"></i>  Add Friend</button>
+                                                </form>
+                                            }
+
+                                        }
+                                        @if (isNull == true)
+                                        {
+                                            <form asp-controller="Friends" asp-action="SendFriendRequest" method="post" class="showPeople">
+                                                <input style="display:none" value="@Person.UserId" name="ReceiverUserId" />
+                                                <input style="display:none" value="@User.Identity.Name" name="SenderUserName" />
+                                                <button type="submit" class="btn btn-secondary"><i class="fa fa-user-plus" aria-hidden="true"></i>  Add Friend</button>
+                                            </form>
+                                        }
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            }
+        }
+    </div>
+
+
+</main>
+
+
+

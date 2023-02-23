@@ -1,0 +1,80 @@
+﻿
+body {
+    position: relative;
+    min-height: 100vh;
+    padding-bottom: 38px;
+}
+
+header {
+    position: absolute;
+    top: 0;
+    min-width: 100vw;
+}
+
+#webSiteLogo {
+    margin-left: 30px;
+    width: 56px;
+    height: 56px;
+    overflow: hidden;
+    padding: 0;
+}
+
+main {
+    padding-top: 80px;
+}
+
+
+
+footer {
+    position: absolute;
+    bottom: 0;
+}
+
+#copyRight {
+    text-align: center;
+    background-color: #333;
+    color: #fff;
+    padding: 7px;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    min-width: 100vw;
+    bottom: 0;
+}
+
+
+
+
+
+.navbarIcon {
+    position: sticky;
+    color: white;
+    padding:0px;
+    font-size:30px;
+}
+
+#searchBarButton {
+    float: left;
+    color: white;
+    background-color: Transparent;
+    border: none;
+    font-size: 17px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+    #searchBarButton :hover {
+        color: #0b7dda;
+    }
+
+#searchBarButton::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+a{
+    text-decoration:none;
+}
+a:hover{
+    text-decoration:underline;
+}

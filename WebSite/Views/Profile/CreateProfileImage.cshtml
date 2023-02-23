@@ -1,0 +1,46 @@
+﻿@model UserInfoCollectionViewModel
+
+@{
+    ViewData["Title"] = "CreateProfileImage";
+}
+
+@{
+    Layout = "_ProfileLayout";
+}
+<main>
+    <div class="row py-3 px-4">
+        <div class="col-lg-7 mx-auto">
+            <div class="px-4 py-3">
+                <div class="p-4 rounded shadow-sm bg-light">
+                    <h3 style=" text-align: center">Upload Profile Picture</h3>
+                    <form asp-action="CreateProfileImage" enctype="multipart/form-data">
+                        <input style="display:none" value="@User.Identity.Name" name="identityUsername" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="form-group">
+                            <label asp-for="ProfileImage.Title" class="control-label"></label>
+                            <input asp-for="ProfileImage.Title" value="ProfileImage" class="form-control" readonly />
+                            <span asp-validation-for="ProfileImage.Title" class="text-danger"></span>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="ProfileImage.ImageFile" class="control-label"></label>
+                            <br />
+                            <input asp-for="ProfileImage.ImageFile" type="file" accept="image/*" name="ImageFile" required />
+                            <span asp-validation-for="ProfileImage.ImageFile" class="text-danger"></span>
+                        </div>
+
+
+                        <div class="input-group create-account-btn-div" style="align-items:center">
+                            <button type="submit" value="Create" class="btn btn-primary"style="width:50%" >Upload</button>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</main>

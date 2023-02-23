@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Mars Land</title>
+
+    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
+
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/Js/JavaScript.js"></script>
+
+    <script src="~/lib/tilt.js/tilt.jquery.min.js"></script>
+    <script src="~/lib/vanilla-tilt/vanilla-tilt.min.js"></script>
+
+    <link href="~/Css/layoutStyleSheet.css" rel="stylesheet" />
+    <link href="~/Css/registrationStyleSheet.css" rel="stylesheet" />
+    <link href="~/Css/forgotPasswordStyleSheet.css" rel="stylesheet" />
+
+    <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
+    <script src="~/lib/font-awesome/js/all.min.js"></script>
+
+    <link rel="icon" href="~/Tools/Images/SiteLogo.png" />
+
+</head>
+<body onload="checkCookie()">
+    <div>
+        @RenderBody()
+
+        <header>
+
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="container-fluid" style="padding-right: 20px;">
+                    <a class="navbar-brand" href="/Home/Index" id="webSiteLogo"><img src="~/Tools/Images/MarsLogo.png" alt="Mars Logo" class="img-fluid"></a>
+                    @*<a class="navbar-brand" href="/Home/Index" style="visibility:visible"><h2 class="text-warning">LogoHere</h2></a>*@
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mob-navbar" aria-label="Toggle">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="mob-navbar">
+                        <ul class="navbar-nav mb-2 mb-lg-0 mx-auto">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="/Home/Index">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Home/Feedback">About Us</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Our Services</a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="/Home/PrivacyPolicy">Privacy Policy</a></li>
+                                    <li><a class="dropdown-item" href="/Home/TermsOfService">Terms Of Service</a></li>
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li><a class="dropdown-item" href="#">Explore More</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Home/ContactUs">Contact Us</a>
+                            </li>
+                        </ul>
+                        <div class="d-flex">
+                            <input class="form-control me-2" type="text" name="UsernameOrEmail" placeholder="Username or Email" required />
+                            <input class="form-control me-2 logPas" name="logPassword" placeholder="Password" type="password" required />
+                            <span class="recPasIcon"><a href="/LogIn/ForgotPassword" title="Forgot Password?"> <i class="fa fa-unlock-alt fa-2x recPasIcon" aria-hidden="true"></i></a></span>
+                            <button class="btn btn-warning" type="button" id="logInButton" style="color:darkblue">Login</button>
+                            <a href="/Home/Registration" class="btn btn-primary" id="regBtn">Register </a>
+                            
+                        </div>
+
+                        
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+
+
+        <footer>
+
+            <div id="footerCookies">
+                <div class="footerDiv1">
+                    <h3>
+                        This site uses cookies.
+                    </h3>
+                </div>
+                <div class="footerDiv2">
+                    <p>
+                        By clicking on an item or other link on the website or Accept, you agree to the use of cookies
+                        and other technologies to process your personal data to enhance and personalise your experience.
+                        We also take IP Address to improve your experience and keep your account safe.
+                        <a href="https://www.cookiebot.com/en/cookie-policy/" target="_blank"> Read more</a>
+                    </p>
+                </div>
+                <div class="footerDiv3">
+                    <button type="button" id="acceptCookies" onclick="checkCookie()">Accept</button>
+                </div>
+            </div>
+            <p id="copyRight">Copyright &copy;
+            <script>document.write(new Date().getFullYear());</script>, Giorgi Dgebuadze</p>
+        </footer>
+
+
+
+    </div>
+</body>
+</html>

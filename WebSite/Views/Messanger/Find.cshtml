@@ -1,0 +1,65 @@
+﻿@{
+    Layout = "_MessangerLayout";
+}
+<div class="find-user-div">
+    <form asp-controller="Messanger" asp-action="FindUser" method="post">
+        <input placeholder="Username" class="find-user-input" name="username"/>
+        <button type="submit" id="find-user-btn" class="find-user-btn"><i class="fa fa-search" aria-hidden="true"></i></button>
+    </form>
+</div>
+<div class="chat-body">
+
+    
+
+        @foreach (var user in Model)
+        {
+            <div class="find-user-list">
+                <a asp-controller="Messanger" asp-action="CreatePrivateRoom" asp-route-userId="@user.Id">
+                    @user.UserName
+                </a>
+            </div>
+        }
+</div>
+
+<div class="footer-text">
+    <strong>Click any of above to start private chat!</strong>
+</div>
+
+@*<div class="modal" id="find-user-modal">
+    <form asp-controller="Messanger" asp-action="EditRoomName" class="modal-body">
+        <button type="button" class="close" onclick="closeModal()">X</button>*@
+        @*@Model.UserId @Model.ProfileImage.ImageName*@
+        @*<div style="display:flex">
+            @if (Person.ImageId != null)
+            {
+                <img src="~/Tools/ProfileImages/@Person.ImageName" asp-append-version="true" alt="Profile Image" class="rounded-circle" id="peopleProfileImages" />
+            }
+            else
+            {
+                if (Person.Gender == "Female")
+                {
+                    <img src="~/Tools/Images/ProfileImageFemaleTemplate.png" alt="Profile Image" class="rounded-circle" id="peopleProfileImages" />
+                }
+                else
+                {
+                    <img src="~/Tools/Images/ProfileImageMaleTemplate.png" alt="Profile Image" class="rounded-circle" id="peopleProfileImages" />
+                }
+            }
+
+            <div>
+                <span>
+                    <a asp-controller="User" asp-action="UserProfileView" asp-route-Id="@Person.UserId">@Person.FirstName @Person.LastName</a>
+                </span>
+
+                @if (Person.Gender != "")
+                {
+                    <p>@Person.Gender</p>
+                }
+                @if (Person.Country != null)
+                {
+                    <p>@Person.Country</p>
+                }
+            </div>
+        </div>*@
+    <!--</form>
+</div>-->

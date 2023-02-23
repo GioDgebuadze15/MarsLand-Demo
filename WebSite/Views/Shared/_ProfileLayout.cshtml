@@ -1,0 +1,134 @@
+﻿@model UserInfoCollectionViewModel
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Mars Land</title>
+
+    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
+
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/Js/ProfileJavaScript.js"></script>
+
+    <link href="~/Css/profileLayoutStyleSheet.css" rel="stylesheet" />
+    <link href="~/Css/profileStyleSheet.css" rel="stylesheet" />
+    <link href="~/Css/peopleStyleSheet.css" rel="stylesheet" />
+    <link href="~/Css/registrationStyleSheet.css" rel="stylesheet" />
+
+    <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
+    <script src="~/lib/font-awesome/js/all.min.js"></script>
+
+    <link rel="icon" href="~/Tools/Images/SiteLogo.png" />
+
+    <script src="~/axios/axios.min.js"></script>
+</head>
+<body>
+    <div>
+        @RenderBody()
+
+        <header>
+
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="container-fluid" style="padding-right: 20px;">
+                    <a class="navbar-brand" href="/Profile/Profile" id="webSiteLogo"><img src="~/Tools/Images/MarsLogo.png" alt="Mars Logo" class="img-fluid"></a>
+
+                    <form class="d-flex" asp-controller="Friends" asp-action="ShowPeople">
+                        <input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search" name="inputToFindPeople" required>
+                        <input style="display:none" value="@User.Identity.Name" name="IdentityUserName" />
+                        @*<a style="margin-top:3px" href="/Profile/People"> <i class="fa fa-search fa-2x" aria-hidden="true"></i> </a>*@
+                        <button type="submit" id="searchBarButton"><i class="fa fa-search"></i></button>
+                    </form>
+
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mob-navbar" aria-label="Toggle">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="mob-navbar">
+                        <ul class="navbar-nav mb-2 mb-lg-0 mx-auto">
+                            <li class="nav-item">
+                                <span class="nav-link navbarIcon"><a href="/Forum/Forum" title="Forum"> <i class="fa fa-home navbarIcon" aria-hidden="true"></i></a></span>
+                            </li>
+                            <li class="nav-item">
+                                <span class="nav-link navbarIcon"><a href="/Profile/Profile" title="Profile"> <i class="fa fa-user navbarIcon" aria-hidden="true"></i></a></span>
+                            </li>
+                            <li class="nav-item">
+                                <span class="nav-link navbarIcon"><a href="/Friends/Friends" title="Friends"> <i class="fa fa-users navbarIcon" aria-hidden="true"></i></a></span>
+                            </li>
+                            <li class="nav-item">
+                                <span class="nav-link navbarIcon"><a href="/Messanger/Index" title="Messanger"> <i class="fa fa-envelope navbarIcon" aria-hidden="true"></i></a></span>
+                            </li>
+                        </ul>
+
+                        @if (Model != null)
+                        {
+                            if (Model.AppUser.UserInfo.ProfileImage != null)
+                            {
+                                <div style="margin-right:20px">
+                                    <a href="/Profile/Profile">
+                                        <img src="~/Tools/ProfileImages/@Model.AppUser.UserInfo.ProfileImage.ImageName" asp-append-version="true" style="width:40px; height:40px; object-fit: cover;" alt="Profile Image" class="rounded-circle" />
+                                    </a>
+                                </div>
+                            }
+                            else
+                            {
+                                @if (Model.AppUser.UserInfo.Gender == GenderEnum.Female)
+                                {
+                                    <div style="margin-right:20px">
+                                        <a href="/Profile/Profile">
+                                            <img src="~/Tools/Images/ProfileImageFemaleTemplate.png" asp-append-version="true" style="width:40px; height:40px; object-fit: cover;" alt="Profile Image" class="rounded-circle" />
+                                        </a>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div style="margin-right:20px">
+                                        <a href="/Profile/Profile">
+                                            <img src="~/Tools/Images/ProfileImageMaleTemplate.png" asp-append-version="true" style="width:40px; height:40px; object-fit: cover;" alt="Profile Image" class="rounded-circle" />
+                                        </a>
+                                    </div>
+                                }
+                            }
+                        }
+
+                        <div style=" display: block;margin-right: 75px">
+                            <a style="display:table-cell;color:white;text-decoration:none" href="/Profile/Profile">@User.Identity.Name</a>
+                        </div>
+                        <div class="d-flex">
+
+                            <form asp-controller="LogIn" asp-action="LogOut" method="post">
+                                @*<span style="color:white"><i class="fa fa-sign-out fa-2x" aria-hidden="true"></i></span>*@
+                                <button class="btn btn-info " type="submit" id="signOutButton" style="color:black">Log Out</button>
+                            </form>
+                        </div>
+
+                        @*<div class="displayLogInError" id="displayLogInError">
+
+                            </div>*@
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+
+
+        <footer>
+
+
+            <p id="copyRight">
+                Copyright &copy;
+                <script>document.write(new Date().getFullYear());</script>, Giorgi Dgebuadze
+            </p>
+        </footer>
+
+
+
+    </div>
+
+    
+</body>
+</html>
